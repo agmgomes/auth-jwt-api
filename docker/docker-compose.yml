@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: agmgomes
+      POSTGRES_PASSWORD: authjwt
+      POSTGRES_DB: authjwtdb
+    volumes:
+      - pgdata:/var/lib/postegresql/data
+
+volumes:
+  pgdata:
