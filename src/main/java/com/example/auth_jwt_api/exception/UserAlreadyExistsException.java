@@ -16,11 +16,11 @@ public class UserAlreadyExistsException extends ApiException {
     @Override
     public ResponseEntity<ApiErrorResponse> ApiErrorException() {
         ApiErrorResponse errorResponse = new ApiErrorResponse(
-                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                HttpStatus.CONFLICT.value(),
                 "User with login " + username + " already exists.",
                 Instant.now()
         );
 
-        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 }
