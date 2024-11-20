@@ -10,6 +10,7 @@ import com.example.auth_jwt_api.security.UserDetailsImpl;
 import com.example.auth_jwt_api.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,9 +35,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@Valid @RequestBody RegisterDto registerDto) {
+    public ResponseEntity<UserDto> register(@Valid @RequestBody RegisterDto registerDto) {
         User newUser = authenticationService.save(registerDto);
-        return ResponseEntity.ok(newUser);
+        UserDto userResponse = new UserDto(newUser.getId(), newUser.getLogin(), newUser.getRole());
+        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
     //Endpoints for testing roles
