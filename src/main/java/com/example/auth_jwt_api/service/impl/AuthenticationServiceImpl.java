@@ -2,8 +2,8 @@ package com.example.auth_jwt_api.service.impl;
 
 import com.example.auth_jwt_api.dto.auth.AuthRequestDto;
 import com.example.auth_jwt_api.dto.auth.RegisterDto;
+import com.example.auth_jwt_api.entity.Role;
 import com.example.auth_jwt_api.entity.User;
-import com.example.auth_jwt_api.exception.ApiException;
 import com.example.auth_jwt_api.exception.UserAlreadyExistsException;
 import com.example.auth_jwt_api.repository.UserRepository;
 import com.example.auth_jwt_api.security.UserDetailsImpl;
@@ -15,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 
@@ -36,8 +35,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new UserAlreadyExistsException(registerDto.login());
         }
 
+        Role role = Role.valueOf(registerDto.role());
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.password());
-        User newUser = new User(registerDto.login(), encryptedPassword, registerDto.role());
+        User newUser = new User(registerDto.login(), encryptedPassword, role);
+
         return userRepository.save(newUser);
     }
 
